@@ -1,10 +1,18 @@
 from django.db import models
 from django.contrib.auth.models import AbstractBaseUser, BaseUserManager, PermissionsMixin
-from django.conf import settings
 import uuid
 # uuid: 複雑でより長いidを作成するためのモジュール
 
 # Create your models here.
+
+
+def load_path_video(instance, filename):
+    return '/'.join(['video', str(instance.title)+str('.mp4')])
+
+
+def load_path_thum(instance, filename):
+    ext = filename.split('.')[-1]
+    return '/'.join(['thum', str(instance.title)+str(ext)])
 
 
 class UserManager(BaseUserManager):
