@@ -1,0 +1,4 @@
+.vscode/
+youtube_clone_venv/
+backend/youtube_clone_api/__pycache__
+
