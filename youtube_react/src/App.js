@@ -1,25 +1,26 @@
-import logo from './logo.svg';
-import './App.css';
+import "./App.css";
+import { indigo } from "@mui/material/colors";
+import { ThemeProvider, createTheme } from "@mui/material/styles";
+import NavBar from "./components/NavBar";
+
+const theme = createTheme({
+    palette: {
+        primary: indigo,
+        secondary: {
+            main: "#f44336",
+        },
+    },
+    typography: {
+        fontFamily: '"Roboto", sans-serif',
+    },
+});
 
 function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+    return (
+        <ThemeProvider theme={theme}>
+            <NavBar />
+        </ThemeProvider>
+    );
 }
 
 export default App;
