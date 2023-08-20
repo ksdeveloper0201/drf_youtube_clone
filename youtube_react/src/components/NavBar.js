@@ -1,25 +1,15 @@
 import React from "react";
-
+// import { withCookies } from "react-cookie";
 import { Toolbar, Typography, AppBar } from "@mui/material";
-import { styled } from "@mui/material/styles";
 
-// import LogoutIcon from "@mui/icons-material/Logout";
 import { FiLogOut } from "react-icons/fi";
 import { FaYoutube } from "react-icons/fa";
-// import YouTubIcon from "@mui/icons-material/YouTube";
 
-const useStyles = styled(AppBar)(({ theme }) => ({
-    title: {
-        flexGrow: 1,
-    },
-    logoutIcon: {
-        position: "absolute",
-        right: 0,
-    },
-}));
-
-const NavBar = () => {
-    const classes = useStyles;
+const NavBar = (props) => {
+    const Logout = () => {
+        props.cookies.remove("jwt-token");
+        window.location.href = "/";
+    };
 
     return (
         <AppBar position="static">
@@ -27,16 +17,17 @@ const NavBar = () => {
                 <button className="logo">
                     <FaYoutube />
                 </button>
-                <Typography variant="h5" className={classes.title}>
+                <Typography variant="h5" sx={{ flexGrow: 1 }}>
                     Youtube App
                 </Typography>
 
                 <button className="logout">
-                    <FiLogOut />
+                    <FiLogOut onClick={() => Logout()} />
                 </button>
             </Toolbar>
         </AppBar>
     );
 };
 
+// export default withCookies(NavBar);
 export default NavBar;
