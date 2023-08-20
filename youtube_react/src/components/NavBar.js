@@ -1,5 +1,5 @@
 import React from "react";
-// import { withCookies } from "react-cookie";
+import { withCookies } from "react-cookie";
 import { Toolbar, Typography, AppBar } from "@mui/material";
 
 import { FiLogOut } from "react-icons/fi";
@@ -29,5 +29,4 @@ const NavBar = (props) => {
     );
 };
 
-// export default withCookies(NavBar);
-export default NavBar;
+export default withCookies(NavBar);
