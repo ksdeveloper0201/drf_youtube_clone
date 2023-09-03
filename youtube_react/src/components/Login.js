@@ -14,7 +14,6 @@ import Box from "@mui/material/Box";
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
-import { createTheme, ThemeProvider } from "@mui/material/styles";
 import { CircularProgress } from "@mui/material";
 import {
     START_FETCH,
@@ -23,8 +22,6 @@ import {
     INPUT_EDIT,
     TOGGLE_MODE,
 } from "./actionTypes";
-
-const defaultTheme = createTheme();
 
 function Copyright(props) {
     return (
@@ -101,12 +98,14 @@ const Login = (props) => {
     const [state, dispatch] = useReducer(loginReducer, initialState);
 
     const inputChangedLog = () => (event) => {
-        const cred = state.credentialsLog;
-        cred[event.target.name] = event.target.value;
+        // const cred = state.credentialsLog;
+        // cred[event.target.name] = event.target.value;
         dispatch({
             type: INPUT_EDIT,
-            inputName: "state.credentialLog",
-            payload: cred,
+            // inputName: "state.credentialLog",
+            // payload: cred,
+            inputName: event.target.name,
+            payload: event.target.value,
         });
     };
 
@@ -122,7 +121,8 @@ const Login = (props) => {
                         headers: { "Content-Type": "application/json" },
                     }
                 );
-                props.cookies.set("jwt_token", res.data.access);
+                props.cookies.set("jwt-token", res.data.access);
+                console.log(props.cookies["jwt-token"]);
                 res.data.access
                     ? (window.location.href = "/youtube")
                     : (window.location.href = "/");
@@ -163,131 +163,126 @@ const Login = (props) => {
     };
 
     return (
-        <ThemeProvider theme={defaultTheme}>
-            <Container component="main" maxWidth="xs">
-                <CssBaseline />
+        <Container component="main" maxWidth="xs">
+            <CssBaseline />
+            <Box
+                sx={{
+                    marginTop: 8,
+                    display: "flex",
+                    flexDirection: "column",
+                    alignItems: "center",
+                }}
+            >
+                {state.isLoading && <CircularProgress />}
+                <Avatar sx={{ m: 1, bgcolor: "secondary.main" }}>
+                    <LockOutlinedIcon />
+                </Avatar>
+                <Typography component="h1" variant="h5">
+                    {state.isLoginView ? "Login" : "Register"}
+                </Typography>
                 <Box
-                    sx={{
-                        marginTop: 8,
-                        display: "flex",
-                        flexDirection: "column",
-                        alignItems: "center",
-                    }}
+                    component="form"
+                    onSubmit={login}
+                    noValidate
+                    sx={{ mt: 1 }}
                 >
                     {state.isLoading && <CircularProgress />}
-                    <Avatar sx={{ m: 1, bgcolor: "secondary.main" }}>
-                        <LockOutlinedIcon />
-                    </Avatar>
-                    <Typography component="h1" variant="h5">
-                        Sign in
-                    </Typography>
-                    <Box
-                        component="form"
-                        onSubmit={login}
-                        noValidate
-                        sx={{ mt: 1 }}
+                    <TextField
+                        margin="normal"
+                        required
+                        fullWidth
+                        id="email"
+                        label="Email Address"
+                        name="email"
+                        value={state.credentialsLog.email}
+                        onChange={inputChangedLog()}
+                        autoComplete="email"
+                        autoFocus
+                    />
+                    <TextField
+                        margin="normal"
+                        required
+                        fullWidth
+                        name="password"
+                        value={state.credentialsLog.password}
+                        onChange={inputChangedLog()}
+                        label="Password"
+                        type="password"
+                        id="password"
+                        autoComplete="current-password"
+                    />
+                    <span
+                        style={{
+                            display: "flex",
+                            flexDirection: "column",
+                            alignItems: "center",
+                            color: "fuchsia",
+                            marginTop: 10,
+                        }}
                     >
-                        {state.isLoading && <CircularProgress />}
-                        <TextField
-                            margin="normal"
-                            required
-                            fullWidth
-                            id="email"
-                            label="Email Address"
-                            name="email"
-                            value={state.credentialsLog.email}
-                            onChange={inputChangedLog()}
-                            autoComplete="email"
-                            autoFocus
-                        />
-                        <TextField
-                            margin="normal"
-                            required
-                            fullWidth
-                            name="password"
-                            value={state.credentialsLog.password}
-                            onChange={inputChangedLog()}
-                            label="Password"
-                            type="password"
-                            id="password"
-                            autoComplete="current-password"
-                        />
-                        <span
-                            style={{
-                                display: "flex",
-                                flexDirection: "column",
-                                alignItems: "center",
-                                color: "fuchsia",
-                                marginTop: 10,
-                            }}
-                        >
-                            {state.error}
-                        </span>
+                        {state.error}
+                    </span>
 
-                        <Button
-                            sx={{
-                                display: "flex",
-                                flexDirection: "column",
-                                alignItems: "center",
-                                color: "teal",
-                            }}
-                            type="submit"
-                            fullWidth
-                            disabled={
-                                !state.credentialsLog.password ||
-                                !state.credentialsLogs.email
-                            }
-                            variant="contained"
-                            color="primary"
-                        >
-                            {state.isLoginView ? "Login" : "Register"}
-                        </Button>
+                    <Button
+                        sx={{
+                            display: "flex",
+                            flexDirection: "column",
+                            alignItems: "center",
+                            // color: "teal",
+                            margin: 2,
+                        }}
+                        type="submit"
+                        fullWidth
+                        disabled={
+                            !state.credentialsLog.password ||
+                            !state.credentialsLog.email
+                        }
+                        variant="contained"
+                        color="primary"
+                    >
+                        {state.isLoginView ? "Login" : "Register"}
+                    </Button>
 
-                        <span
-                            onClick={() => toggleView()}
-                            style={{
-                                display: "flex",
-                                flexDirection: "column",
-                                alignItems: "center",
-                                color: "teal",
-                            }}
-                        >
-                            {state.isLoginView
-                                ? "Create Account"
-                                : "Back to login"}
-                        </span>
+                    <span
+                        onClick={() => toggleView()}
+                        style={{
+                            display: "flex",
+                            flexDirection: "column",
+                            alignItems: "center",
+                            color: "teal",
+                        }}
+                    >
+                        {state.isLoginView ? "Create Account" : "Back to login"}
+                    </span>
 
-                        <FormControlLabel
-                            control={
-                                <Checkbox value="remember" color="primary" />
-                            }
-                            label="Remember me"
-                        />
-                        <Button
+                    <FormControlLabel
+                        control={<Checkbox value="remember" color="primary" />}
+                        label="Remember me"
+                    />
+                    {/* <Button
                             type="submit"
                             fullWidth
                             variant="contained"
                             sx={{ mt: 3, mb: 2 }}
                         >
-                            Sign In
-                        </Button>
-                        <Grid container>
-                            <Grid item xs>
-                                <Link href="#" variant="body2">
-                                    Forgot password?
-                                </Link>
-                            </Grid>
-                            <Grid item>
-                                <Link href="#" variant="body2">
-                                    {"Don't have an account? Sign Up"}
-                                </Link>
-                            </Grid>
+                            {state.isLoginView ? "Login" : "Register"}
+                        </Button> */}
+                    <Grid container>
+                        <Grid item xs>
+                            <Link href="#" variant="body2">
+                                Forgot password?
+                            </Link>
                         </Grid>
-                    </Box>
+                        <Grid item>
+                            <Link href="#" variant="body2">
+                                {"Don't have an account? Sign Up"}
+                            </Link>
+                        </Grid>
+                    </Grid>
                 </Box>
-                <Copyright sx={{ mt: 8, mb: 4 }} />
-            </Container>
-        </ThemeProvider>
+            </Box>
+            <Copyright sx={{ mt: 8, mb: 4 }} />
+        </Container>
     );
 };
 

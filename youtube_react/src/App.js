@@ -3,6 +3,9 @@ import { indigo } from "@mui/material/colors";
 import { ThemeProvider, createTheme } from "@mui/material/styles";
 import NavBar from "./components/NavBar";
 
+import ApiCOntextProvider from "./context/ApiContext";
+import Main from "./components/Main";
+
 const theme = createTheme({
     palette: {
         primary: indigo,
@@ -17,9 +20,12 @@ const theme = createTheme({
 
 function App() {
     return (
-        <ThemeProvider theme={theme}>
-            <NavBar />
-        </ThemeProvider>
+        <ApiCOntextProvider>
+            <ThemeProvider theme={theme}>
+                <NavBar />
+                <Main />
+            </ThemeProvider>
+        </ApiCOntextProvider>
     );
 }
 
