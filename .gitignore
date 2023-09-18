@@ -1,6 +1,8 @@
 .vscode/
-drf_youtube_venv/
+venv_youtube_clone/
 backend/youtube_clone_api/__pycache__
 backend/api/__pycache__
 backend/api/migrations/
 *.sqlite3
+backend/db.sqlite3
+backend/media/
